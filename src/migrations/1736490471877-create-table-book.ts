@@ -8,7 +8,7 @@ export class CreateTableBook1736490471877 implements MigrationInterface {
             "title" VARCHAR(255) NOT NULL,
             "author" VARCHAR(255) NOT NULL,
             "publishedYear" INT NOT NULL,
-            "genres" TEXT[] NOT NULL,
+            "genres" TEXT NOT NULL,
             "stock" INT NOT NULL,
             "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
             "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),

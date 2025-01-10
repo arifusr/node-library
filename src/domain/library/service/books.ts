@@ -1,47 +1,37 @@
 import { BookDTO, CreateBookRequest } from '../dto/books';
+import { BookRepositoryInterface } from '../repository/book';
+import { Book } from '../model/books';
 
 export interface BookServiceInterface {
-    getBooks(): BookDTO[];
-    createBook(book: CreateBookRequest): void;
-    removeBook(title: string): void;
-    updateBook(book: BookDTO): void;
+    GetBooks(): Promise<Book[]>;
+    CreateBook(book: CreateBookRequest): void;
+    GetBookById(id: string): Promise<Book | null>;
+    // removeBook(title: string): void;
+    // updateBook(book: BookDTO): void;
 }
 
 export class BookServiceImpl implements BookServiceInterface {
     private books: BookDTO[] = [];
+    bookRepository: BookRepositoryInterface;
 
-    constructor() {
-        this.books.push(
-            {
-                title: 'Example Book 1',
-                author: 'John Doe',
-                publishedYear: 2021,
-                genres: ['Fiction'],
-                stock: 10,
-            },
-            {
-                title: 'Example Book 2',
-                author: 'Jane Smith',
-                publishedYear: 2019,
-                genres: ['Non-Fiction', 'Biography'],
-                stock: 5,
-            },
-            {
-                title: 'Example Book 3',
-                author: 'Alice Johnson',
-                publishedYear: 2020,
-                genres: ['Science Fiction'],
-                stock: 7,
-            }
-        );
+    constructor(bookRepository: BookRepositoryInterface) {
+        this.bookRepository = bookRepository;
     }
 
-    getBooks = (): BookDTO[] => {
-        return this.books;
-    }
+    GetBooks = async(): Promise<Book[]> => {
+        const books = await this.bookRepository.GetAllBooks();
+        return books
+    };
 
-    createBook = (book: CreateBookRequest): void => {
-        this.books.push(book);
+    CreateBook = async (book: CreateBookRequest): Promise<void> => {
+        // DTO to Entity
+        const entity = book.toEntity();
+        await this.bookRepository.CreateNewBook(entity);
+    };
+
+    GetBookById = async (id: string): Promise<Book | null> => {
+        const book = await this.bookRepository.GetBookById(id);
+        return book
     }
 
     removeBook(title: string): void {

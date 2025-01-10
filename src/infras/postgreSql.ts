@@ -9,7 +9,13 @@ const AppDataSource = new DataSource({
     database: 'library',
     entities: ['dist/domain/**/*.js'],
     migrations: ['dist/migrations/*.js'],
-    migrationsTableName: 'migrations'
+    migrationsTableName: 'migrations',
+    logging: true,
 });
+
+export const Connection =  async () => {
+    await AppDataSource.initialize();
+    return AppDataSource
+};
 
 export default AppDataSource;

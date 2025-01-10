@@ -1,5 +1,5 @@
+import 'reflect-metadata';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
 @Entity()
 export class Book {
     @PrimaryGeneratedColumn()
@@ -14,19 +14,26 @@ export class Book {
     @Column()
     publishedYear: number;
 
-    @Column("simple-array")
+    @Column("simple-array", { array: true })
     genres: string[];
 
     @Column()
     stock: number;
 
-    constructor(id: string, title: string, author: string, publishedYear: number, genres: string[], stock: number) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.publishedYear = publishedYear;
-        this.genres = genres;
-        this.stock = stock;
+    constructor(obj: Book) {
+        this.id = '';
+        this.title = '';
+        this.author = '';
+        this.publishedYear = 0;
+        this.genres = [];
+        this.stock = 0;
+        if (obj) {
+            this.id = obj.id;
+            this.title = obj.title;
+            this.author = obj.author;
+            this.publishedYear = obj.publishedYear;
+            this.genres = obj.genres;
+            this.stock = obj.stock;
+        }
     }
 }
-
