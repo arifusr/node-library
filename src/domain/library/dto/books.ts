@@ -12,13 +12,7 @@ export interface BookDTO {
     stock: number;
 }
 
-export interface CreateBookRequestInterface {
-    title: string;
-    author: string;
-    publishedYear: number;
-    genres: string[];
-    stock: number;
-}
+export interface CreateBookRequestInterface extends BookDTO {}
 
 export class CreateBookRequest implements CreateBookRequestInterface {
     @IsString()
@@ -60,6 +54,23 @@ export async function validateCreateBookRequest(
     json: CreateBookRequest
 ): Promise<[...Assert<CreateBookRequest, boolean>]> {
     const book = plainToInstance(CreateBookRequest, json);
+    const errors = await validate(book);
+
+    if (errors.length > 0) {
+        console.log('Validation failed. Errors:', errors);
+        return [undefined, false];
+    } else {
+        console.log('Validation succeeded');
+        return [book, true];
+    }
+}
+
+export class UpdateBookRequest extends CreateBookRequest {}
+
+export async function validateUpdateBookRequest(
+    json: UpdateBookRequest
+): Promise<[...Assert<UpdateBookRequest, boolean>]> {
+    const book = plainToInstance(UpdateBookRequest, json);
     const errors = await validate(book);
 
     if (errors.length > 0) {

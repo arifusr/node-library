@@ -1,3 +1,4 @@
+import { UpdateBookRequest } from "../dto/books";
 import { Book } from "../model/books";
 import { BookServiceInterface } from "./books";
 
@@ -21,5 +22,9 @@ export class LibraryServiceImpl implements LibraryServiceInterface {
 
     GetBookById = (id: string): Promise<Book | null> => {
         return this.bookService.GetBookById(id);
+    }
+
+    UpdateBookById(id: string, updateBookRequest: UpdateBookRequest): Promise<void> {
+        return this.bookService.UpdateBookById(id, updateBookRequest);
     }
 }

@@ -1,13 +1,14 @@
-import { BookDTO, CreateBookRequest } from '../dto/books';
+import { BookDTO, CreateBookRequest, UpdateBookRequest } from '../dto/books';
 import { BookRepositoryInterface } from '../repository/book';
 import { Book } from '../model/books';
 
 export interface BookServiceInterface {
     GetBooks(): Promise<Book[]>;
-    CreateBook(book: CreateBookRequest): void;
+    CreateBook(book: CreateBookRequest): Promise<void>;
     GetBookById(id: string): Promise<Book | null>;
+    UpdateBookById(id: string, updateBookRequest: UpdateBookRequest): Promise<void>;
+
     // removeBook(title: string): void;
-    // updateBook(book: BookDTO): void;
 }
 
 export class BookServiceImpl implements BookServiceInterface {
@@ -18,9 +19,9 @@ export class BookServiceImpl implements BookServiceInterface {
         this.bookRepository = bookRepository;
     }
 
-    GetBooks = async(): Promise<Book[]> => {
+    GetBooks = async (): Promise<Book[]> => {
         const books = await this.bookRepository.GetAllBooks();
-        return books
+        return books;
     };
 
     CreateBook = async (book: CreateBookRequest): Promise<void> => {
@@ -31,14 +32,17 @@ export class BookServiceImpl implements BookServiceInterface {
 
     GetBookById = async (id: string): Promise<Book | null> => {
         const book = await this.bookRepository.GetBookById(id);
-        return book
-    }
+        return book;
+    };
 
     removeBook(title: string): void {
         this.books = this.books.filter((book) => book.title !== title);
     }
 
-    updateBook(book: BookDTO): void {
-        this.books = this.books.map((b) => (b.title === book.title ? book : b));
+    UpdateBookById =  async (id: string, updateBookRequest: UpdateBookRequest): Promise<void> => {
+        // DTO to Entity
+        const entity = updateBookRequest.toEntity();
+        entity.id = id;
+        await this.bookRepository.UpdateBook(entity);
     }
 }

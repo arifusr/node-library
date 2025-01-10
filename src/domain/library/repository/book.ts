@@ -6,6 +6,7 @@ export interface BookRepositoryInterface {
     CreateNewBook(book: Book): Promise<void>;
     GetAllBooks(): Promise<Book[]>;
     GetBookById(id: string): Promise<Book | null>;
+    UpdateBook(book: Book): Promise<void>;
 }
 
 export class BookRepository implements BookRepositoryInterface {
@@ -36,5 +37,9 @@ export class BookRepository implements BookRepositoryInterface {
     GetBookById = async (id: string): Promise<Book | null> => {
         const result = await this.Repository.findOneBy({id: id});
         return result;
+    }
+
+    UpdateBook =  async (book: Book): Promise<void> => {
+        await this.Repository.save(book);
     }
 }

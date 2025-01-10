@@ -22,4 +22,8 @@ export class LibraryRepository implements LibraryRepositoryInterface {
     GetBookById = async (id: string): Promise<Book | null> => {
         return await this.bookRepository.GetBookById(id);
     }
+
+    UpdateBook =  async (book: Book): Promise<void> => {
+        await this.bookRepository.UpdateBook(book);
+    }
 }
