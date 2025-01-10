@@ -18,8 +18,7 @@ export class BookRepository implements BookRepositoryInterface {
 
     CreateNewBook = async (book: Book) => {
         try {
-            const result = await this.Repository.save(book);
-            console.log(result);
+            await this.Repository.save(book);
         }catch(e){
             console.log(e);
         }

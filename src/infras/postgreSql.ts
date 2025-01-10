@@ -22,8 +22,6 @@ const AppDataSource = new DataSource({
     logging: dbLogging === 'true',
 });
 
-console.log(AppDataSource)
-
 export const Connection = async (): Promise<DataSource> => {
     return await AppDataSource.initialize();
 };
