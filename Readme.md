@@ -15,7 +15,7 @@ This is a Library project built with Node.js, TypeScript, Fastify, and PostgreSQ
 
     ```bash
     git clone https://github.com/arifusr/node-library.git
-    cd library-project
+    cd node-library
     ```
 
 2. Start the containers:
