@@ -48,5 +48,11 @@ export class LibraryHandler {
             // call the service
             this.libraryService.UpdateBookById( id ,updateBookRequest);
         });
+
+        server.delete('/books/:id', async (request, reply) => {
+            const { id } = request.params as { id: string };
+            // call the service
+            this.libraryService.RemoveBookById(id);}
+        );
     };
 }

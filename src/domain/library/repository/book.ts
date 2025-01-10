@@ -7,6 +7,7 @@ export interface BookRepositoryInterface {
     GetAllBooks(): Promise<Book[]>;
     GetBookById(id: string): Promise<Book | null>;
     UpdateBook(book: Book): Promise<void>;
+    DeleteBookById(id: string): Promise<void>;
 }
 
 export class BookRepository implements BookRepositoryInterface {
@@ -41,5 +42,9 @@ export class BookRepository implements BookRepositoryInterface {
 
     UpdateBook =  async (book: Book): Promise<void> => {
         await this.Repository.save(book);
+    }
+    
+    DeleteBookById =  async (id: string): Promise<void> => {
+        await this.Repository.softDelete({id: id});
     }
 }

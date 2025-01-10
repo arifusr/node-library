@@ -27,4 +27,8 @@ export class LibraryServiceImpl implements LibraryServiceInterface {
     UpdateBookById(id: string, updateBookRequest: UpdateBookRequest): Promise<void> {
         return this.bookService.UpdateBookById(id, updateBookRequest);
     }
+
+    RemoveBookById(id: string): void {
+        return this.bookService.RemoveBookById(id);
+    }
 }

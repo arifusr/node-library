@@ -26,4 +26,8 @@ export class LibraryRepository implements LibraryRepositoryInterface {
     UpdateBook =  async (book: Book): Promise<void> => {
         await this.bookRepository.UpdateBook(book);
     }
+
+    DeleteBookById =  async (id: string): Promise<void> => {
+        await this.bookRepository.DeleteBookById(id);
+    }
 }

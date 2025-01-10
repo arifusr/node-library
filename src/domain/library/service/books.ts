@@ -7,8 +7,7 @@ export interface BookServiceInterface {
     CreateBook(book: CreateBookRequest): Promise<void>;
     GetBookById(id: string): Promise<Book | null>;
     UpdateBookById(id: string, updateBookRequest: UpdateBookRequest): Promise<void>;
-
-    // removeBook(title: string): void;
+    RemoveBookById(id: string): void;
 }
 
 export class BookServiceImpl implements BookServiceInterface {
@@ -35,8 +34,8 @@ export class BookServiceImpl implements BookServiceInterface {
         return book;
     };
 
-    removeBook(title: string): void {
-        this.books = this.books.filter((book) => book.title !== title);
+    RemoveBookById =  async (id: string): Promise<void> => {
+        await this.bookRepository.DeleteBookById(id);
     }
 
     UpdateBookById =  async (id: string, updateBookRequest: UpdateBookRequest): Promise<void> => {

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn } from 'typeorm';
 @Entity()
 export class Book {
     @PrimaryGeneratedColumn()
@@ -19,6 +19,9 @@ export class Book {
 
     @Column()
     stock: number;
+
+    @DeleteDateColumn() 
+    deletedAt?: Date;
 
     constructor(obj: Book) {
         this.id = '';
