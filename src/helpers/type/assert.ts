@@ -1,0 +1,1 @@
+type Assert<T, F> = F extends false ? [ Exclude<T, undefined>, true] : [undefined, false];
