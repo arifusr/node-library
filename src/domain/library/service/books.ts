@@ -6,8 +6,11 @@ export interface BookServiceInterface {
     GetBooks(): Promise<Book[]>;
     CreateBook(book: CreateBookRequest): Promise<void>;
     GetBookById(id: string): Promise<Book | null>;
-    UpdateBookById(id: string, updateBookRequest: UpdateBookRequest): Promise<void>;
-    RemoveBookById(id: string): void;
+    UpdateBookById(
+        id: string,
+        updateBookRequest: UpdateBookRequest
+    ): Promise<Book>;
+    RemoveBookById(id: string): Promise<void>;
 }
 
 export class BookServiceImpl implements BookServiceInterface {
@@ -34,14 +37,27 @@ export class BookServiceImpl implements BookServiceInterface {
         return book;
     };
 
-    RemoveBookById =  async (id: string): Promise<void> => {
-        await this.bookRepository.DeleteBookById(id);
-    }
+    RemoveBookById = async (id: string): Promise<void> => {
+        return this.bookRepository.DeleteBookById(id);
+    };
 
-    UpdateBookById =  async (id: string, updateBookRequest: UpdateBookRequest): Promise<void> => {
+    UpdateBookById = async (
+        id: string,
+        updateBookRequest: UpdateBookRequest
+    ): Promise<Book> => {
+        // get the book
+        const book = await this.GetBookById(id);
+        if (!book) {
+            throw new CustomError('Book not found', 404);
+        }
         // DTO to Entity
         const entity = updateBookRequest.toEntity();
         entity.id = id;
-        await this.bookRepository.UpdateBook(entity);
-    }
+        try {
+            await this.bookRepository.UpdateBook(entity);
+            return entity;
+        } catch (e) {
+            throw e;
+        }
+    };
 }

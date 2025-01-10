@@ -24,11 +24,11 @@ export class LibraryServiceImpl implements LibraryServiceInterface {
         return this.bookService.GetBookById(id);
     }
 
-    UpdateBookById(id: string, updateBookRequest: UpdateBookRequest): Promise<void> {
+    UpdateBookById(id: string, updateBookRequest: UpdateBookRequest): Promise<Book> {
         return this.bookService.UpdateBookById(id, updateBookRequest);
     }
 
-    RemoveBookById(id: string): void {
+    RemoveBookById(id: string): Promise<void> {
         return this.bookService.RemoveBookById(id);
     }
 }

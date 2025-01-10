@@ -5,6 +5,7 @@ import {
     validateCreateBookRequest,
     validateUpdateBookRequest,
 } from '../domain/library/dto/books';
+import HandleCustomError from '../helpers/error/handlerCustomError';
 
 export class LibraryHandler {
     private libraryService: LibraryServiceInterface;
@@ -24,15 +25,33 @@ export class LibraryHandler {
                 return;
             }
             // call the service
-            this.libraryService.CreateBook(createBookRequest);
+            try {
+                await this.libraryService.CreateBook(createBookRequest);
+                reply.code(201).send();
+            } catch (e) {
+                HandleCustomError(e, reply);
+            }
         });
         server.get('/books', async (request, reply) => {
-            return this.libraryService.GetBooks();
+            try {
+                return await this.libraryService.GetBooks();
+            } catch (e) {
+                HandleCustomError(e, reply);
+            }
         });
 
         server.get('/books/:id', async (request, reply) => {
             const { id } = request.params as { id: string };
-            return this.libraryService.GetBookById(id);
+            try {
+                const book = await this.libraryService.GetBookById(id);
+                if (!book) {
+                    reply.code(404).send('Book not found');
+                    return;
+                }
+                return book;
+            } catch (e) {
+                HandleCustomError(e, reply);
+            }
         });
 
         server.put('/books/:id', async (request, reply) => {
@@ -46,13 +65,26 @@ export class LibraryHandler {
                 return;
             }
             // call the service
-            this.libraryService.UpdateBookById( id ,updateBookRequest);
+            try {
+                const book = this.libraryService.UpdateBookById(
+                    id,
+                    updateBookRequest
+                );
+                reply.code(204).send(book);
+            } catch (e) {
+                HandleCustomError(e, reply);
+            }
         });
 
         server.delete('/books/:id', async (request, reply) => {
             const { id } = request.params as { id: string };
             // call the service
-            this.libraryService.RemoveBookById(id);}
-        );
+            try {
+                await this.libraryService.RemoveBookById(id);
+                reply.code(204).send();
+            } catch (e) {
+                HandleCustomError(e, reply);
+            }
+        });
     };
 }
