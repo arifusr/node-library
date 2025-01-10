@@ -82,7 +82,7 @@ export class LibraryHandler {
                 }
                 // call the service
                 try {
-                    const book = this.libraryService.UpdateBookById(
+                    const book = await this.libraryService.UpdateBookById(
                         id,
                         updateBookRequest
                     );
