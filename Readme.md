@@ -21,7 +21,7 @@ This is a Library project built with Node.js, TypeScript, Fastify, and PostgreSQ
 2. Start the containers:
 
     ```bash
-    docker-compose up
+    docker-compose up --build -d
     ```
 
     This will start both the Node.js application and the PostgreSQL database in separate containers. The application will be accessible at `http://localhost:8080`.
