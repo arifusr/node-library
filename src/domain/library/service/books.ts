@@ -1,6 +1,7 @@
 import { BookDTO, CreateBookRequest, UpdateBookRequest } from '../dto/books';
 import { BookRepositoryInterface } from '../repository/book';
 import { Book } from '../model/books';
+import CustomError from '../../../helpers/error/customError';
 
 export interface BookServiceInterface {
     GetBooks(): Promise<Book[]>;
