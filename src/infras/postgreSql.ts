@@ -3,11 +3,11 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 // Access environment variables
-const dbHost = process.env['DB.HOST'];
-const dbName = process.env['DB.NAME'];
-const dbUserName = process.env['DB.USER'];
-const dbPassword = process.env['DB.PASSWORD'];
-const dbLogging   = process.env['DB.LOGGING'];
+const dbHost = process.env['DB_HOST'];
+const dbName = process.env['DB_NAME'];
+const dbUserName = process.env['DB_USER'];
+const dbPassword = process.env['DB_PASSWORD'];
+const dbLogging   = process.env['DB_LOGGING'];
 
 const AppDataSource = new DataSource({
     type: 'postgres',
@@ -21,6 +21,8 @@ const AppDataSource = new DataSource({
     migrationsTableName: 'migrations',
     logging: dbLogging === 'true',
 });
+
+console.log(AppDataSource)
 
 export const Connection = async (): Promise<DataSource> => {
     return await AppDataSource.initialize();
