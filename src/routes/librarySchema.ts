@@ -16,6 +16,7 @@ const CreateBookSchema = {
     ],
 }
 
+
 const BookSchema = {
     type: 'object',
     properties: {
@@ -27,6 +28,20 @@ const BookSchema = {
         stock: { type: 'number' },
     }
 }
+
+const PaginationSchema = {
+    type: 'object',
+    properties: {
+        page: { type: 'number' },
+        totalPages: { type: 'number' },
+        totalBooks: { type: 'number' },
+        books: {
+            type: 'array',
+            items: BookSchema
+        }
+    }
+};
+
 
 const LibrarySchema = {
     CreateBookSchema: {
@@ -47,10 +62,7 @@ const LibrarySchema = {
             description: 'Get all books',
             tags: ['Library'],
             response: {
-                200: {
-                    type: 'array',
-                    items: BookSchema
-                },
+                200: PaginationSchema
             },
         },
     },

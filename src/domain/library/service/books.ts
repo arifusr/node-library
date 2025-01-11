@@ -1,10 +1,11 @@
-import { BookDTO, CreateBookRequest, UpdateBookRequest } from '../dto/books';
+import { BookDTO, CreateBookRequest, UpdateBookRequest, BookPaginationDTO } from '../dto/books';
+import { SearchAndPaginationRequest } from '../dto/pagination';
 import { BookRepositoryInterface } from '../repository/book';
 import { Book } from '../model/books';
 import CustomError from '../../../helpers/error/customError';
 
 export interface BookServiceInterface {
-    GetBooks(): Promise<Book[]>;
+    GetBooks( searchAndPaginationRequset: SearchAndPaginationRequest): Promise<[Book[],BookPaginationDTO]>;
     CreateBook(book: CreateBookRequest): Promise<void>;
     GetBookById(id: string): Promise<Book | null>;
     UpdateBookById(
@@ -22,9 +23,9 @@ export class BookServiceImpl implements BookServiceInterface {
         this.bookRepository = bookRepository;
     }
 
-    GetBooks = async (): Promise<Book[]> => {
-        const books = await this.bookRepository.GetAllBooks();
-        return books;
+    GetBooks = async (searchAndPaginationRequset: SearchAndPaginationRequest): Promise<[Book[], BookPaginationDTO]> => {
+        const [books, pagination ]  = await this.bookRepository.GetAllBooks(searchAndPaginationRequset);
+        return  [books, pagination ];
     };
 
     CreateBook = async (book: CreateBookRequest): Promise<void> => {

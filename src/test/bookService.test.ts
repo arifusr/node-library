@@ -1,5 +1,9 @@
 import { BookServiceImpl } from '../domain/library/service/books';
-import { BookDTO, CreateBookRequest } from '../domain/library/dto/books';
+import {
+    BookDTO,
+    BookPaginationDTO,
+    CreateBookRequest,
+} from '../domain/library/dto/books';
 import { BookRepositoryInterface } from '../domain/library/repository/book';
 import { Book } from '../domain/library/model/books';
 
@@ -10,8 +14,11 @@ class MockBookRepository implements BookRepositoryInterface {
         this.books.push(book);
     }
 
-    async GetAllBooks(): Promise<Book[]> {
-        return this.books;
+    async GetAllBooks(): Promise<[Book[], BookPaginationDTO]> {
+        return [
+            this.books,
+            { page: 1, totalPages: 1, totalBooks: this.books.length },
+        ];
     }
 
     async GetBookById(id: string): Promise<Book | null> {
@@ -41,7 +48,7 @@ describe('BookServiceImpl', () => {
     });
 
     it('should return all books', async () => {
-        const books = await bookService.GetBooks();
+        const [books, _] = await bookService.GetBooks({});
         expect(books).toHaveLength(0);
     });
 
@@ -54,7 +61,7 @@ describe('BookServiceImpl', () => {
             5
         );
         await bookService.CreateBook(newBook);
-        const books = await bookService.GetBooks();
+        const [books, _] = await bookService.GetBooks({});
         expect(books).toHaveLength(1);
         expect(books).toEqual(expect.objectContaining(books));
     });
@@ -68,8 +75,8 @@ describe('BookServiceImpl', () => {
             5
         );
         await bookService.CreateBook(newBook);
-        const books = await bookService.GetBooks();
-        const createdBook = books[0]
+        const [books, _] = await bookService.GetBooks({});
+        const createdBook = books[0];
         const book = await bookService.GetBookById(createdBook.id);
         expect(book).toEqual(expect.objectContaining(createdBook));
     });
@@ -83,8 +90,8 @@ describe('BookServiceImpl', () => {
             5
         );
         await bookService.CreateBook(newBook);
-        const books = await bookService.GetBooks();
-        const createdBook = books[0]
+        const [books, _] = await bookService.GetBooks({});
+        const createdBook = books[0];
         const updatedBook: CreateBookRequest = new CreateBookRequest(
             'Updated Book',
             'Updated Author',
@@ -106,9 +113,9 @@ describe('BookServiceImpl', () => {
             5
         );
         await bookService.CreateBook(newBook);
-        const beforeDeletedBooks = await bookService.GetBooks();
+        const [beforeDeletedBooks, before] = await bookService.GetBooks({});
         await bookService.RemoveBookById(beforeDeletedBooks[0].id);
-        const afterDeletedBooks = await bookService.GetBooks();
+        const [afterDeletedBooks, after] = await bookService.GetBooks({});
         expect(afterDeletedBooks).toHaveLength(beforeDeletedBooks.length - 1);
     });
 });

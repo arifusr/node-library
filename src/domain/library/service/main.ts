@@ -1,4 +1,5 @@
 import { UpdateBookRequest } from "../dto/books";
+import { SearchAndPaginationRequest } from "../dto/pagination";
 import { Book } from "../model/books";
 import { BookServiceInterface } from "./books";
 
@@ -12,8 +13,8 @@ export class LibraryServiceImpl implements LibraryServiceInterface {
         this.bookService = bookService;
     }
 
-    GetBooks = () => {
-        return this.bookService.GetBooks();
+    GetBooks = (searchAndPaginationRequest: SearchAndPaginationRequest) => {
+        return this.bookService.GetBooks(searchAndPaginationRequest);
     }
 
     CreateBook = (book: any) => {

@@ -81,3 +81,9 @@ export async function validateUpdateBookRequest(
         return [book, true];
     }
 }
+
+export interface BookPaginationDTO {
+    page: number;
+    totalPages: number;
+    totalBooks: number;
+}

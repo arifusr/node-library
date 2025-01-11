@@ -41,8 +41,10 @@ export class LibraryHandler {
             '/books',
             LibrarySchema.GetAllBookSchema,
             async (request, reply) => {
+                const { search, page = 1, limit = 10 } = request.query as { search?: string; page?: number; limit?: number };
                 try {
-                    return await this.libraryService.GetBooks();
+                    const [result, pagination] = await this.libraryService.GetBooks({ search, page, limit });
+                    return { books: result, ...pagination };
                 } catch (e) {
                     HandleCustomError(e, reply);
                 }

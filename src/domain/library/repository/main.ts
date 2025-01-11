@@ -1,5 +1,6 @@
 import { BookRepositoryInterface } from './book';
 import { Book } from '../model/books';
+import { SearchAndPaginationRequest } from '../dto/pagination';
 
 export interface LibraryRepositoryInterface extends BookRepositoryInterface {
 }
@@ -15,8 +16,8 @@ export class LibraryRepository implements LibraryRepositoryInterface {
         await this.bookRepository.CreateNewBook(book);
     }
 
-    GetAllBooks = async () => {
-        return await this.bookRepository.GetAllBooks();
+    GetAllBooks = async (searchAndPaginationRequest: SearchAndPaginationRequest) => {
+        return await this.bookRepository.GetAllBooks(searchAndPaginationRequest);
     }
 
     GetBookById = async (id: string): Promise<Book | null> => {
